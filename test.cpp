@@ -8,24 +8,19 @@ const int MIN_VAL = -100;
 const int MAX_VAL = +100;
 
 TEST (B_Tree, int_insert_and_find) {
-  using trait_t = Traits <int>;
-  const int order = 3;
-  BTree <trait_t, order> tree;
-  const int n_elements = 100;
-  for (int i = 0; i < n_elements; i++) {
-    int value = Random::generate_value <int> (MIN_VAL, MAX_VAL);
-    tree.insert(value);
-  }
-}
-
-TEST (B_Tree, long_long_insert_and_find) {
-  using trait_t = Traits <long long>;
+  using value_t = int;
+  using trait_t = Traits <value_t>;
   const int order = 5;
   BTree <trait_t, order> tree;
-  const int n_elements = 100;
-  for (int i = 0; i < n_elements; i++) {
-    int value = Random::generate_value <long long> (MIN_VAL, MAX_VAL);
+  const int n_elements = 1000;
+  std::vector <value_t> values(n_elements);
+  int cnt = 0;
+  for (auto& value: values) {
+    value = Random::generate_value <value_t> (MIN_VAL, MAX_VAL);
     tree.insert(value);
+  }
+  for (auto& value: values) {
+    EXPECT_TRUE(tree.find(value));
   }
 }
 

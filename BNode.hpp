@@ -28,7 +28,6 @@ public:
   }
 
   ~BNode () {
-    /*
     for (auto child: children) {
       if (child) {
         delete child;
@@ -38,7 +37,6 @@ public:
     if (right) {
       delete right;
     }
-    */
   }
 
   void insert (std::size_t pos, const value_t& value) {

@@ -11,8 +11,6 @@ public:
   using print_t = typename Trait::print_t;
   using node = BNode <Trait, BTREE_ORDER>;
 
-  node* root;
-
   BTree () {
     root = new node();
   }
@@ -24,7 +22,13 @@ public:
     }
   }
 
+  bool find (const value_t& value) const {
+    return find(root, value);
+  }
+
 private:
+  node* root;
+
   int insert (node* pnode, const value_t& value) {
     std::size_t pos = 0;
     while (pos < pnode->count and pnode->data[pos] < value) {
@@ -41,13 +45,13 @@ private:
     return pnode->is_overflow() ? node::BT_OVERFLOW : node::NORMAL;
   }
 
-  void split (node* pnode, int pos) {
+  void split (node* pnode, std::size_t pos) {
     node* node_in_overflow = pnode->children[pos];
     node* child_1 = node_in_overflow;
     child_1->count = 0;
     node* child_2 = new node();
-    int iter = 0;
-    int cur = 0;
+    std::size_t iter = 0;
+    std::size_t cur = 0;
     while (cur < BTREE_ORDER / 2) {
       child_1->children[cur] = node_in_overflow->children[iter];
       child_1->data[cur] = node_in_overflow->data[iter];
@@ -81,8 +85,8 @@ private:
     node* node_in_overflow = pnode;
     node* child_1 = new node();
     node* child_2 = new node();
-    int iter = 0;
-    int cur = 0;
+    std::size_t iter = 0;
+    std::size_t cur = 0;
     while (cur < BTREE_ORDER / 2) {
       child_1->children[cur] = node_in_overflow->children[iter];
       child_1->data[cur] = node_in_overflow->data[iter];
@@ -108,6 +112,20 @@ private:
     pnode->children[0] = child_1;
     pnode->children[1] = child_2;
     pnode->count = 1;
+  }
+
+  bool find (node* pnode, const value_t& value) const {
+    if (not pnode) {
+      return false;
+    }
+    std::size_t cur = 0;
+    while (cur < BTREE_ORDER + 1 and pnode->data[cur] < value) {
+      cur++;
+    }
+    if (cur < BTREE_ORDER + 1 and pnode->data[cur] == value) {
+      return true;
+    }
+    return find(pnode->children[cur], value);
   }
 
 };
