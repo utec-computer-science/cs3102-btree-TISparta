@@ -12,7 +12,6 @@ public:
   std::size_t count;
   container_t data;
   child_container_t children;
-  node* right;
 
   enum state {
     BT_OVERFLOW,
@@ -24,7 +23,6 @@ public:
     count = 0;
     data.resize(BTREE_ORDER + 1);
     children.resize(BTREE_ORDER + 2, nullptr);
-    right = nullptr;
   }
 
   ~BNode () {
@@ -34,9 +32,6 @@ public:
       }
     }
     children.clear();
-    if (right) {
-      delete right;
-    }
   }
 
   void insert (std::size_t pos, const value_t& value) {

@@ -26,6 +26,10 @@ public:
     return find(root, value);
   }
 
+  void print (std::ostream& out) const {
+    print(root, 0, out);
+  }
+
 private:
   node* root;
 
@@ -61,13 +65,7 @@ private:
     }
     child_1->children[cur] = node_in_overflow->children[iter];
     pnode->insert(pos, node_in_overflow->data[iter]);
-    if (node_in_overflow->children[0]) {
-      iter++;
-    } else {
-      child_2->right = child_1->right;
-      child_1->right = child_2;
-      pnode->children[pos + 1] = child_2;
-    }
+    iter++;
     cur = 0;
     while (iter < BTREE_ORDER + 1) {
       child_2->children[cur] = node_in_overflow->children[iter];
@@ -96,10 +94,7 @@ private:
     }
     child_1->children[cur] = node_in_overflow->children[iter];
     pnode->data[0] = node_in_overflow->data[iter];
-    child_1->right = child_2;
-    if (pnode->children[0]) {
-      iter++;
-    }
+    iter++;
     cur = 0;
     while (iter < BTREE_ORDER + 1) {
       child_2->children[cur] = node_in_overflow->children[iter];
@@ -119,13 +114,26 @@ private:
       return false;
     }
     std::size_t cur = 0;
-    while (cur < BTREE_ORDER + 1 and pnode->data[cur] < value) {
+    while (cur < pnode->count and pnode->data[cur] < value) {
       cur++;
     }
-    if (cur < BTREE_ORDER + 1 and pnode->data[cur] == value) {
+    if (cur < pnode->count and pnode->data[cur] == value) {
       return true;
     }
     return find(pnode->children[cur], value);
+  }
+
+  void print (node* pnode, int level, std::ostream& out) const {
+    int cur = 0;
+    for (cur = pnode->count - 1; cur >= 0; cur--) {
+      if (pnode->children[cur + 1]) {
+        print(pnode->children[cur + 1], level + 1, out);
+      }
+      out << std::string(level * 2, ' ') << pnode->data[cur] << '\n';
+    }
+    if (pnode->children[cur + 1]) {
+      print(pnode->children[cur + 1], level + 1, out);
+    }
   }
 
 };

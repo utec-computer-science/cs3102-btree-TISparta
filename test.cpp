@@ -10,7 +10,7 @@ const int MAX_VAL = +100;
 TEST (B_Tree, int_insert_and_find) {
   using value_t = int;
   using trait_t = Traits <value_t>;
-  const int order = 5;
+  const int order = 3;
   BTree <trait_t, order> tree;
   const int n_elements = 1000;
   std::vector <value_t> values(n_elements);
