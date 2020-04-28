@@ -1,8 +1,10 @@
+#pragma once
+
 #include <vector>
 #include <iostream>
 
 template <typename T>
-class Traits {
+class Trait1 {
 public:
   using value_t = T;
   using container_t = std::vector <value_t>;

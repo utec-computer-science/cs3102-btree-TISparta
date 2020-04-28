@@ -1,15 +1,16 @@
 #include <gtest/gtest.h>
 
-#include "Random.hpp"
-#include "Traits.hpp"
-#include "BTree.hpp"
+#include "utility/Random.hpp"
+#include "traits/Trait1.hpp"
+#include "traits/Trait2.hpp"
+#include "btree/BTree.hpp"
 
 const int MIN_VAL = -1000;
 const int MAX_VAL = +1000;
 
-TEST (B_Tree, int_insert_and_find) {
+TEST (Trait_1, int_insert_and_find) {
   using value_t = int;
-  using trait_t = Traits <value_t>;
+  using trait_t = Trait1 <value_t>;
   const int order = 33;
   BTree <trait_t, order> tree;
   const int n_elements = 1000;
@@ -23,9 +24,9 @@ TEST (B_Tree, int_insert_and_find) {
   }
 }
 
-TEST (B_Tree, long_long_insert_and_find) {
+TEST (Trait_1, long_long_insert_and_find) {
   using value_t = long long;
-  using trait_t = Traits <value_t>;
+  using trait_t = Trait1 <value_t>;
   const int order = 42;
   BTree <trait_t, order> tree;
   const int n_elements = 1000;
@@ -40,9 +41,9 @@ TEST (B_Tree, long_long_insert_and_find) {
   }
 }
 
-TEST (B_Tree, char_insert_and_find) {
+TEST (Trait_1, char_insert_and_find) {
   using value_t = char;
-  using trait_t = Traits <value_t>;
+  using trait_t = Trait1 <value_t>;
   const int order = 3;
   BTree <trait_t, order> tree;
   const int n_elements = 1000;

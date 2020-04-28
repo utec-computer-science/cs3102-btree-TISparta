@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 
 template <typename Trait, int BTREE_ORDER>
