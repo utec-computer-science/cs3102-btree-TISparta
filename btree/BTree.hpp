@@ -28,13 +28,21 @@ public:
     return find(root, value);
   }
 
-  void print (std::ostream& out) const {
-    print_tree(root, 0, out);
+  friend std::ostream& operator << (std::ostream& out, BTree tree) {
+    tree.print_tree(out);
+    tree.print_inorder(out);
+    return out;
   }
-
+ 
 private:
   node* root;
   functor_t search;
+  print_t print;
+
+  enum print_case {
+    TREE,
+    INORDER
+  };
 
   int insert (node* pnode, const value_t& value) {
     std::size_t pos = search(pnode->data, pnode->count, value);
@@ -93,16 +101,42 @@ private:
     return find(pnode->children[pos], value);
   }
 
+  void print_tree (std::ostream& out) const {
+    if (print() == print_case::TREE) {
+      print_tree(root, 0, out);
+    }
+  }
+
   void print_tree (node* pnode, int level, std::ostream& out) const {
-    std::size_t pos = 0;
+    int pos = 0;
     for (pos = pnode->count - 1; pos >= 0; pos--) {
       if (pnode->children[pos + 1]) {
-        print(pnode->children[pos + 1], level + 1, out);
+        print_tree(pnode->children[pos + 1], level + 1, out);
       }
       out << std::string(level * 2, ' ') << pnode->data[pos] << '\n';
     }
     if (pnode->children[pos + 1]) {
-      print(pnode->children[pos + 1], level + 1, out);
+      print_tree(pnode->children[pos + 1], level + 1, out);
+    }
+  }
+
+  void print_inorder (std::ostream& out) const {
+    if (print() == print_case::INORDER) {
+      print_inorder(root, out);
+      out << '\n';  
+    }
+  }
+
+  void print_inorder (node* pnode, std::ostream& out) const {
+    int pos = 0;
+    for (pos = 0; pos < pnode->count; pos++) {
+      if (pnode->children[pos]) {
+        print_inorder(pnode->children[pos], out);
+      }
+      out << pnode->data[pos] << ' ';
+    }
+    if (pnode->children[pos]) {
+      print_inorder(pnode->children[pos], out);
     }
   }
 

@@ -74,6 +74,29 @@ TEST (Trait_2, int_insert_and_find) {
   }
 }
 
+TEST (print, trait_1) {
+  using value_t = int;
+  using trait_t = Trait1 <value_t>;
+  const int order = 4;
+  BTree <trait_t, order> tree;
+  const int n_elements = 20;
+  for (int value = 1; value <= n_elements; value++) {
+    tree.insert(value);
+  }
+  std::cout << tree;
+}
+
+TEST (print, trait_2) {
+  using value_t = int;
+  using trait_t = Trait2 <value_t>;
+  const int order = 4;
+  BTree <trait_t, order> tree;
+  const int n_elements = 20;
+  for (int value = 1; value <= n_elements; value++) {
+    tree.insert(value);
+  }
+  std::cout << tree;
+}
 
 int main (int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);

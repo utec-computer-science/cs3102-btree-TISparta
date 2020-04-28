@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <iostream>
 
 template <typename T>
 class Trait1 {
@@ -21,13 +20,13 @@ public:
     }
   };
 
-  class PostOrderPrint {
+  class TreePrint {
   public:
-    void operator () (void) {
-      std::cout << "post order" << std::endl;
+    int operator () () const {
+      return 0;
     }
   };
 
   using functor_t = SimpleSearch;
-  using print_t = PostOrderPrint;
+  using print_t = TreePrint;
 };

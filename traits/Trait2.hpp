@@ -30,13 +30,13 @@ public:
     }
   };
 
-  class PostOrderPrint {
+  class InOrderPrint {
   public:
-    void operator () (void) {
-      std::cout << "post order" << std::endl;
+    int operator () () const {
+      return 1;
     }
   };
 
   using functor_t = BinarySearch;
-  using print_t = PostOrderPrint;
+  using print_t = InOrderPrint;
 };
