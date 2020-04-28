@@ -35,7 +35,7 @@ public:
   }
 
   void insert (std::size_t pos, const value_t& value) {
-    int cur = count;
+    std::size_t cur = count;
     while (cur > pos) {
       data[cur] = std::move(data[cur - 1]);
       children[cur + 1] = children[cur];

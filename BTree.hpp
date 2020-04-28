@@ -27,17 +27,15 @@ public:
   }
 
   void print (std::ostream& out) const {
-    print(root, 0, out);
+    print_tree(root, 0, out);
   }
 
 private:
   node* root;
+  functor_t search;
 
   int insert (node* pnode, const value_t& value) {
-    std::size_t pos = 0;
-    while (pos < pnode->count and pnode->data[pos] < value) {
-      pos++;
-    }
+    std::size_t pos = search(pnode->data, pnode->count, value);
     if (pnode->children[pos]) {
       int state = insert(pnode->children[pos], value);
       if (state == node::BT_OVERFLOW) {
@@ -86,26 +84,23 @@ private:
     if (not pnode) {
       return false;
     }
-    std::size_t cur = 0;
-    while (cur < pnode->count and pnode->data[cur] < value) {
-      cur++;
-    }
-    if (cur < pnode->count and pnode->data[cur] == value) {
+    std::size_t pos = search(pnode->data, pnode->count, value);
+    if (pos < pnode->count and pnode->data[pos] == value) {
       return true;
     }
-    return find(pnode->children[cur], value);
+    return find(pnode->children[pos], value);
   }
 
-  void print (node* pnode, int level, std::ostream& out) const {
-    int cur = 0;
-    for (cur = pnode->count - 1; cur >= 0; cur--) {
-      if (pnode->children[cur + 1]) {
-        print(pnode->children[cur + 1], level + 1, out);
+  void print_tree (node* pnode, int level, std::ostream& out) const {
+    std::size_t pos = 0;
+    for (pos = pnode->count - 1; pos >= 0; pos--) {
+      if (pnode->children[pos + 1]) {
+        print(pnode->children[pos + 1], level + 1, out);
       }
-      out << std::string(level * 2, ' ') << pnode->data[cur] << '\n';
+      out << std::string(level * 2, ' ') << pnode->data[pos] << '\n';
     }
-    if (pnode->children[cur + 1]) {
-      print(pnode->children[cur + 1], level + 1, out);
+    if (pnode->children[pos + 1]) {
+      print(pnode->children[pos + 1], level + 1, out);
     }
   }
 
