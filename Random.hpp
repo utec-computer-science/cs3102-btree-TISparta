@@ -6,7 +6,7 @@
 class Random {
 public:
   template <typename T>
-  static T generate_value (const T min_val, const T max_val) {
+  static T generate_value (const T min_val = 0, const T max_val = 0) {
     Random random;
     if (std::is_same <T, int>::value) {
       return random.generate_integer <T> (min_val, max_val);

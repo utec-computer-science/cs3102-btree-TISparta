@@ -18,7 +18,7 @@ public:
   void insert (const value_t& value) {
     int state = insert(root, value);
     if (state == node::BT_OVERFLOW) {
-      split_root(root, value);
+      split(root, value, true);
     }
   }
 
@@ -49,64 +49,37 @@ private:
     return pnode->is_overflow() ? node::BT_OVERFLOW : node::NORMAL;
   }
 
-  void split (node* pnode, std::size_t pos) {
-    node* node_in_overflow = pnode->children[pos];
-    node* child_1 = node_in_overflow;
-    child_1->count = 0;
-    node* child_2 = new node();
-    std::size_t iter = 0;
-    std::size_t cur = 0;
-    while (cur < BTREE_ORDER / 2) {
-      child_1->children[cur] = node_in_overflow->children[iter];
-      child_1->data[cur] = node_in_overflow->data[iter];
-      child_1->count++;
-      iter++;
-      cur++;
-    }
-    child_1->children[cur] = node_in_overflow->children[iter];
-    pnode->insert(pos, node_in_overflow->data[iter]);
-    iter++;
-    cur = 0;
-    while (iter < BTREE_ORDER + 1) {
-      child_2->children[cur] = node_in_overflow->children[iter];
-      child_2->data[cur] = node_in_overflow->data[iter];
-      child_2->count++;
-      iter++;
-      cur++;
-    }
-    child_2->children[cur] = node_in_overflow->children[iter];
-    pnode->children[pos] = child_1;
-    pnode->children[pos + 1] = child_2;
-  }
-
-  void split_root (node* pnode, const value_t& value) {
-    node* node_in_overflow = pnode;
+  void split (node* pnode, std::size_t pos, bool is_root = false) {
+    node* poverflow = is_root ? pnode : pnode->children[pos];
+    // left child
     node* child_1 = new node();
+    std::move(std::begin(poverflow->data), 
+              std::begin(poverflow->data) + BTREE_ORDER / 2, 
+              std::begin(child_1->data));
+    std::move(std::begin(poverflow->children), 
+              std::begin(poverflow->children) + BTREE_ORDER / 2 + 1, 
+              std::begin(child_1->children));
+    child_1->count = BTREE_ORDER / 2;
+    // right child
     node* child_2 = new node();
-    std::size_t iter = 0;
-    std::size_t cur = 0;
-    while (cur < BTREE_ORDER / 2) {
-      child_1->children[cur] = node_in_overflow->children[iter];
-      child_1->data[cur] = node_in_overflow->data[iter];
-      child_1->count++;
-      iter++;
-      cur++;
+    std::move(std::begin(poverflow->data) + BTREE_ORDER / 2 + 1, 
+              std::end(poverflow->data), 
+              std::begin(child_2->data));
+    std::move(std::begin(poverflow->children) + BTREE_ORDER / 2 + 1, 
+              std::end(poverflow->children), 
+              std::begin(child_2->children));
+    child_2->count = BTREE_ORDER - BTREE_ORDER / 2;
+    // updated node
+    if (is_root) {
+      pnode->data[0] = std::move(pnode->data[BTREE_ORDER / 2]);
+      pnode->children[0] = child_1;
+      pnode->children[1] = child_2;
+      pnode->count = 1;
+    } else {
+      pnode->insert(pos, poverflow->data[BTREE_ORDER / 2]);
+      pnode->children[pos] = child_1;
+      pnode->children[pos + 1] = child_2;
     }
-    child_1->children[cur] = node_in_overflow->children[iter];
-    pnode->data[0] = node_in_overflow->data[iter];
-    iter++;
-    cur = 0;
-    while (iter < BTREE_ORDER + 1) {
-      child_2->children[cur] = node_in_overflow->children[iter];
-      child_2->data[cur] = node_in_overflow->data[iter];
-      child_2->count++;
-      iter++;
-      cur++;
-    }
-    child_2->children[cur] = node_in_overflow->children[iter];
-    pnode->children[0] = child_1;
-    pnode->children[1] = child_2;
-    pnode->count = 1;
   }
 
   bool find (node* pnode, const value_t& value) const {
