@@ -58,6 +58,23 @@ TEST (Trait_1, char_insert_and_find) {
   }
 }
 
+TEST (Trait_2, int_insert_and_find) {
+  using value_t = int;
+  using trait_t = Trait2 <value_t>;
+  const int order = 33;
+  BTree <trait_t, order> tree;
+  const int n_elements = 1000;
+  std::vector <value_t> values(n_elements);
+  for (auto& value: values) {
+    value = Random::generate_value <value_t> (MIN_VAL, MAX_VAL);
+    tree.insert(value);
+  }
+  for (auto& value: values) {
+    EXPECT_TRUE(tree.find(value));
+  }
+}
+
+
 int main (int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

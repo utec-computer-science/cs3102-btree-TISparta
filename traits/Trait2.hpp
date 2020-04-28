@@ -10,14 +10,23 @@ public:
   using container_t = std::vector <value_t>;
   using iterator_t = typename container_t::iterator;
 
-  class SimpleSearch {
+  class BinarySearch {
   public:
     std::size_t operator () (const container_t& data, std::size_t count, const value_t& value) const {
-      std::size_t cur = 0;
-      while (cur < count and data[cur] < value) {
-        cur++;
+      if (count == 0 or data[0] >= value) {
+        return 0;
       }
-      return cur;
+      std::size_t low = 0;
+      std::size_t high = count - 1;
+      while (low != high) {
+        std::size_t mid = (low + high + 1) >> 1;
+        if (data[mid] < value) {
+          low = mid;
+        } else {
+          high = mid - 1;
+        }
+      }
+      return low + 1;
     }
   };
 
@@ -28,6 +37,6 @@ public:
     }
   };
 
-  using functor_t = SimpleSearch;
+  using functor_t = BinarySearch;
   using print_t = PostOrderPrint;
 };

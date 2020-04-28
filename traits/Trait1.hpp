@@ -13,11 +13,11 @@ public:
   class SimpleSearch {
   public:
     std::size_t operator () (const container_t& data, std::size_t count, const value_t& value) const {
-      std::size_t cur = 0;
-      while (cur < count and data[cur] < value) {
-        cur++;
+      std::size_t pos = 0;
+      while (pos < count and data[pos] < value) {
+        pos++;
       }
-      return cur;
+      return pos;
     }
   };
 
