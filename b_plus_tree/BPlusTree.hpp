@@ -76,13 +76,13 @@ private:
     child_1->is_leaf = poverflow->is_leaf;
     // right child
     node* child_2 = new node();
-    std::copy(std::begin(poverflow->data) + BTREE_ORDER / 2, 
+    std::copy(std::begin(poverflow->data) + BTREE_ORDER / 2 + (not poverflow->is_leaf), 
               std::end(poverflow->data), 
               std::begin(child_2->data));
-    std::copy(std::begin(poverflow->children) + BTREE_ORDER / 2, 
+    std::copy(std::begin(poverflow->children) + BTREE_ORDER / 2 + 1, 
               std::end(poverflow->children), 
               std::begin(child_2->children));
-    child_2->count = BTREE_ORDER - BTREE_ORDER / 2 + 1;
+    child_2->count = BTREE_ORDER - BTREE_ORDER / 2 + (poverflow->is_leaf);
     child_2->is_leaf = poverflow->is_leaf;
     // update node
     pnode->is_leaf = false;
