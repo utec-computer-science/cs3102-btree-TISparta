@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 
+#include "../b_tree/Macros.hpp"
+
 template <typename T>
 class Trait2 {
 public:
@@ -33,7 +35,7 @@ public:
   class InOrderPrint {
   public:
     int operator () () const {
-      return 1;
+      return INORDER_PRINT;
     }
   };
 

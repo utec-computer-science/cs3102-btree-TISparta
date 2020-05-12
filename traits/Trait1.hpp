@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "../b_tree/Macros.hpp"
+
 template <typename T>
 class Trait1 {
 public:
@@ -23,7 +25,7 @@ public:
   class TreePrint {
   public:
     int operator () () const {
-      return 0;
+      return TREE_PRINT;
     }
   };
 

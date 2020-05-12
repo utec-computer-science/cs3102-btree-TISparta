@@ -3,7 +3,7 @@
 #include "utility/Random.hpp"
 #include "traits/Trait1.hpp"
 #include "traits/Trait2.hpp"
-#include "btree/BTree.hpp"
+#include "b_tree/BTree.hpp"
 
 const int MIN_VAL = -1000;
 const int MAX_VAL = +1000;
