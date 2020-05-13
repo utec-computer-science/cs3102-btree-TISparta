@@ -8,5 +8,6 @@
 # Run tests
 ```bash
 make
-./test
+./btree-test
+./bplustree-test
 ```
