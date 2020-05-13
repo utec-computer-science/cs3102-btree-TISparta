@@ -7,7 +7,6 @@ class BNode {
 public:
   using value_t = typename Trait::value_t;
   using container_t = typename Trait::container_t;
-  using iterator_t = typename Trait::iterator_t;
   using node = BNode <Trait, BTREE_ORDER>;
   using child_container_t = std::vector <node*>;
 

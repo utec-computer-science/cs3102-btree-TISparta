@@ -122,6 +122,38 @@ TEST (print, trait_2) {
   std::cout << tree;
 }
 
+TEST (range_search1, trait_1) {
+  using value_t = int;
+  using trait_t = Trait2 <value_t>;
+  const int order = 4;
+  BPlusTree <trait_t, order> tree;
+  const int n_elements = 20;
+  for (int value = 1; value <= n_elements; value++) {
+    tree.insert(value);
+  }
+  int cnt = 0;
+  for (auto it = tree.gteq(3); it != tree.end(); ++it) {
+    std::cout << *it << ' ';
+  }
+  std::cout << std::endl;
+}
+
+TEST (range_search2, trait_1) {
+  using value_t = int;
+  using trait_t = Trait2 <value_t>;
+  const int order = 4;
+  BPlusTree <trait_t, order> tree;
+  const int n_elements = 20;
+  for (int value = 1; value <= n_elements; value++) {
+    tree.insert(value);
+  }
+  int cnt = 0;
+  for (auto it = tree.gteq(5); it != tree.gteq(10); ++it) {
+    std::cout << *it << ' ';
+  }
+  std::cout << std::endl;
+}
+
 int main (int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

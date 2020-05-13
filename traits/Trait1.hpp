@@ -9,7 +9,6 @@ class Trait1 {
 public:
   using value_t = T;
   using container_t = std::vector <value_t>;
-  using iterator_t = typename container_t::iterator;
 
   class SimpleSearch {
   public:
