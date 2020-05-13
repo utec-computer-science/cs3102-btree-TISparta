@@ -5,6 +5,7 @@ class Iterator {
 public:
   using value_t = typename Trait::value_t;
   using node = BPlusNode <Trait, BTREE_ORDER>;
+  using iterator_t = Iterator <Trait, BTREE_ORDER>;
 
   Iterator () {}
 
@@ -19,19 +20,19 @@ public:
     return current_node->data[pos];
   }
 
-  bool operator != (Iterator other) const {
+  bool operator != (iterator_t other) const {
     if (current_node != other.current_node) {
       return true;
     }
     return (pos != other.pos);
   }
   
-  Iterator <Trait, BTREE_ORDER> operator = (Iterator <Trait, BTREE_ORDER> other) {
+  iterator_t operator = (iterator_t other) {
     current_node = other.current_node;
     pos = other.pos;
   }
 
-  Iterator <Trait, BTREE_ORDER> operator ++ () {
+  iterator_t operator ++ () {
     if (pos + 1 < current_node->count) {
       pos += 1;
     } else {
